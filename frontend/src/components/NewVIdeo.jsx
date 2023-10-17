@@ -10,17 +10,12 @@ export function NewVideo() {
 
     const addVideoHandler = event => {
         event.preventDefault();
-        // console.log({description,file})
-        // //process data
-        // const formData = new FormData();
-        // formData.append('video', file);
-        // formData.append('title', title);
-        // formData.append('description', description);
-
         const formData = new FormData();
 
         formData.append('file', file);
         formData.append("title", title);
+        formData.append("date", date);
+        formData.append("description", description);
 
         try {
             const vidToSend = fetch("http://localhost:5050/upload-video", {
