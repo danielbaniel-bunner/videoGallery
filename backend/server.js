@@ -31,11 +31,23 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/upload-video", upload.single('file'), (req, res) => {
-  console.log("file uploaded");
+  const metadata = {
+    filename: req.file.originalname,
+    title : req.body.title,
+    description : req.body.description,
+    date : req.body.date,
+  }
+
+
+  const metadataFilePath = path.join(__dirname, 'uploads', `${req.file.originalname}.json`);
+
+  fs.writeFileSync(metadataFilePath, JSON.stringify(metadata, null, 2));
+
 })
 
 app.get('/videos', (req, res) => {
-  const videos = fs.readdirSync('./uploads');
+  const files = fs.readdirSync('./uploads');
+  const videos = files.filter(file => !file.endsWith('.json'));
   res.send(videos);
 });
 
